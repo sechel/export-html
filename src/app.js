@@ -51,11 +51,11 @@ router.post(
     html: yd.string().custom(htmlCustom),
     export: yd
       .object({
-        scale: yd.number().min(0.1).max(2).default(1),
         type: yd.string().allow("jpeg", "png", "webp").default("png"),
         quality: yd.number().min(0).max(100).default(100),
         fullPage: yd.boolean().default(true),
         clip: yd.object({
+          scale: yd.number().min(0.1).max(2).default(1),
           x: yd.number(),
           y: yd.number(),
           width: yd.number(),
@@ -65,7 +65,6 @@ router.post(
         encoding: yd.string().allow("base64", "binary").default("binary"),
       })
       .default({
-        scale: 1,
         type: "png",
         quality: 100,
         fullPage: true,
@@ -77,6 +76,11 @@ router.post(
     const body = ctx.request.body;
     const browser = await getBrowser();
     const page = await browser.newPage();
+    page.setViewport({
+      width: 1000,
+      height: 600,
+      deviceScaleFactor: 2.0
+    });
 
     if (body.url) {
       await page.goto(body.url, { waitUntil: "load" });
