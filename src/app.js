@@ -77,7 +77,7 @@ router.post(
     const browser = await getBrowser();
     const page = await browser.newPage();
     page.setViewport({
-      width: 1000,
+      width: 800,
       height: 600,
       deviceScaleFactor: 2.0
     });
